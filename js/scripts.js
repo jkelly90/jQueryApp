@@ -5,10 +5,10 @@ var apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
 var repository = [];
 
   function addListItem(pokemon) {
-    var listItem = $('<li></li>');
+    var listItem = $('<li class="list-group-item list-group-item-action" data-toggle="modal" data-target="#mymodal"></li>');
     var button = $('<button></button>');
     button.text(pokemon.name);
-    button.addClass('button');
+    button.addClass('btn');
     listItem.append(button);
     $pokemonList.append(listItem);
     listItem.click(function () {
@@ -55,82 +55,23 @@ function loadDetails(item) {
 
 function showDetails(item) {
   pokemonRepository.loadDetails(item).then(function () {
-    showModal(item);
-  });
-}
+    //showModal(item);
+    var modal = $('.modal-body');
+    var name = $('.modal-header').text(item.name);
+    var height = $('<p class="modal-body"></p>').text('Height: ' + item.height);
+    var type = $('<p></p>').text('Type: ' + item.type);
+    var image = $('<img>');
+    image.attr('src', item.imageUrl);
 
-function showModal(item) {
-var $modalContainer = $('#modal-container');
-
-// clear all existing modal content
-$modalContainer.html('');
-
-// create div element in DOM
-var modal = $('<div></div>');
-//add class
-modal.addClass('modal');
-
-//add closing button
-var closeButtonElement = $('<button></button>');
-closeButtonElement.addClass('modal-close');
-closeButtonElement.text('Close');
-closeButtonElement.click( () => hideModal());
-
-
-
-// modal name element
-var nameElement = $('<h1></h1>');
-nameElement.text(item.name);
-
-// modal image
-var imageElement = $('<img></img>');
-imageElement.addClass('modal-img');
-imageElement.attr('src', item.imageUrl);
-
-
-// modal height element
-var heightElement = $('<p></p>');
-heightElement.text('height: ' + item.height);
-
-var typeElement = $('<p></p>');
-typeElement.text('type: ' + item.type);
-
-// appending modal content
-modal.append(closeButtonElement);
-modal.append(nameElement);
-modal.append(imageElement);
-modal.append(heightElement);
-modal.append(typeElement);
-$modalContainer.append(modal);
-
-$modalContainer.addClass('is-visible');
-}
-
-//hide modal with close button
-  function hideModal() {
-    var $modalContainer = $('#modal-container');
-    $modalContainer.removeClass('is-visible')
-  }
-
-// hide modal with ESC
-window.addEventListener('keydown', e => {
-  var $modalContainer = $('#modal-container')[0];
-  if (
-    e.key === 'Escape' && $modalContainer.classList.contains('is-visible')
-  ) {
-    hideModal();
-  }
-});
-
-// hide modal by clicking outside
-  var $modalContainer = $('#modal-container')[0];
-  $modalContainer.click( e => {
-    var target = e.target;
-    if (target === $modalContainer[0]) {
-      hideModal();
+    if(modal.children().length) {
+      modal.children().remove();
     }
-  });
 
+    modal.append(image)
+         .append(height)
+         .append(type);
+  });
+}
 
 return {
   add: add,
@@ -139,8 +80,6 @@ return {
   showDetails: showDetails,
   loadList: loadList,
   loadDetails: loadDetails,
-  showModal: showModal,
-  hideModal: hideModal,
 };
 })();
 
