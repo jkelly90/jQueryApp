@@ -9,5 +9,8 @@
     "rules": {
         "quotes": ["error", "single"]
     }
+    /* eslint-disable no-console */
+    console.error('Error when validating item', item);
+    /* eslint-enable no-console */
 
 }

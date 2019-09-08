@@ -1,3 +1,4 @@
+/*eslint-env jquery*/
 var pokemonRepository = (function () {
 
 var apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
@@ -16,7 +17,7 @@ function loadDetails(item) {
       console.error(e);
     });
 }
-
+/*eslint no-console: ["error", { allow: ["warn", "error"] }] */
 function loadList() {
   return $.ajax(apiUrl, {dataType: 'json' }).then(function(item) {
   $.each(item.results, function(index, item){
@@ -98,8 +99,8 @@ var $pokemonList = $('.pokemon-list');
 
  pokemonRepository.loadList().then(function() {
 
- 	pokemonRepository.getAll().forEach(function(pokemon) {
- 		pokemonRepository.addListItem(pokemon);
- 	});
+ pokemonRepository.getAll().forEach(function(pokemon) {
+ pokemonRepository.addListItem(pokemon);
+ });
 
  });
